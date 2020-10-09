@@ -2,7 +2,6 @@ package com.rest;
 
 import com.rest.dto.PlayerDto;
 import com.rest.steps.PlayerSteps;
-import io.restassured.response.ValidatableResponse;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
@@ -15,6 +14,8 @@ public class PlayerTest {
 
     public PlayerSteps playerSteps = new PlayerSteps();
 
+    int id;
+
     @Test
     public void createNewUserTest() {
         PlayerDto playerData = PlayerDto.builder()
@@ -23,7 +24,7 @@ public class PlayerTest {
                 .teamName("Liverpool")
                 .build();
 
-        ValidatableResponse response = playerSteps.postBody(playerData.getFullName(), playerData.getPosition(), playerData.getTeamName())
+        playerSteps.postBody(playerData.getFullName(), playerData.getPosition(), playerData.getTeamName())
                 .body("fullName", containsString(playerData.getFullName()))
                 .body("position", containsString(playerData.getPosition()))
                 .body("teamName", containsString(playerData.getTeamName()));
