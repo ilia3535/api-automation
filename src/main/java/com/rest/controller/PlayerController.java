@@ -34,5 +34,13 @@ public class PlayerController {
                 .then();
     }
 
+    public ValidatableResponse getAll() {
+        return RestAssured
+                .given()
+                .when()
+                .get(GET_ALL_ENDPOINT)
+                .then();
+    }
+
 
 }
