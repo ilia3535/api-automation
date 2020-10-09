@@ -6,7 +6,7 @@ import io.restassured.response.ValidatableResponse;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -39,13 +39,13 @@ public class PlayerTest {
 
 
         PlayerDto playerId = PlayerDto.builder()
-                .id(23)
+                .id(22)
                 .build();
 
-        List<PlayerDto> actualPlayer = Arrays.asList(
+        List<PlayerDto> actualPlayer = Collections.singletonList(
                 playerSteps
                         .getPlayerById(playerId.getId())
-                        .extract().body().as(PlayerDto[].class)
+                        .extract().body().as(PlayerDto.class)
         );
 
         Assertions

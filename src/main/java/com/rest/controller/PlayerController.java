@@ -28,8 +28,9 @@ public class PlayerController {
     public ValidatableResponse getOne(int id) {
         return RestAssured
                 .given()
+                .pathParam("id", id)
                 .when()
-                .get(GET_ALL_ENDPOINT + "/" + id)
+                .get(GET_ALL_ENDPOINT + "/{id}")
                 .then();
     }
 
