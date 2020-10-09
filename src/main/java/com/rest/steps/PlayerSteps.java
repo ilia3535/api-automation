@@ -18,4 +18,16 @@ public class PlayerSteps {
                 .createPlayer(fullName, position, teamName)
                 .statusCode(statusCode);
     }
+
+    public ValidatableResponse getPlayerById(int id) {
+        return playerController
+                .getOne(id)
+                .statusCode(200);
+    }
+
+    public ValidatableResponse getPlayerById(int statusCode, int id) {
+        return playerController
+                .getOne(id)
+                .statusCode(statusCode);
+    }
 }
