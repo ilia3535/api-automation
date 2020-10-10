@@ -1,16 +1,21 @@
 package com.rest.steps;
 
 import com.rest.controller.TeamController;
+import com.rest.dto.TeamDto;
 import io.restassured.response.ValidatableResponse;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TeamSteps {
 
     public TeamController teamController = new TeamController();
 
-    public ValidatableResponse getAll() {
-        return teamController
+    public List<TeamDto> getAll() {
+        return Arrays.asList(teamController
                 .getAll()
-                .statusCode(200);
+                .statusCode(200)
+                .extract().body().as(TeamDto[].class));
     }
 
     public ValidatableResponse getAll(int statusCode) {
@@ -19,10 +24,11 @@ public class TeamSteps {
                 .statusCode(statusCode);
     }
 
-    public ValidatableResponse findById(int id) {
+    public TeamDto findById(int id) {
         return teamController
                 .findById(id)
-                .statusCode(200);
+                .statusCode(200)
+                .extract().body().as(TeamDto.class);
     }
 
     public ValidatableResponse findById(int statusCode, int id) {

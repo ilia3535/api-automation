@@ -1,33 +1,30 @@
 package com.rest.controller;
 
+import com.rest.dto.PlayerDto;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import org.json.simple.JSONObject;
+
+import static com.rest.utils.SpecificationFactory.getDefaultRequestSpecication;
 
 public class PlayerController {
 
-    private static String POST_CREATE_NEW_PLAYER = "http://localhost:8088/v1/player";
-    private static String GET_ALL_ENDPOINT = "http://localhost:8088/v1/player";
+    private static String POST_CREATE_NEW_PLAYER = "/v1/player";
+    private static String GET_ALL_ENDPOINT = "/v1/player";
 
-    public ValidatableResponse createPlayer(String fullName, String position, String teamName) {
-
-        JSONObject requestParams = new JSONObject();
-        requestParams.put("fullName", fullName);
-        requestParams.put("position", position);
-        requestParams.put("teamName", teamName);
+    public ValidatableResponse createPlayer(PlayerDto toCreatePlayer) {
 
         return RestAssured
-                .given()
-                .header("Content-Type", "application/json")
-                .body(requestParams.toJSONString())
+                .given().spec(getDefaultRequestSpecication())
+                .body(toCreatePlayer)
                 .when()
                 .post(POST_CREATE_NEW_PLAYER)
                 .then();
     }
 
+
     public ValidatableResponse getOne(int id) {
         return RestAssured
-                .given()
+                .given().spec(getDefaultRequestSpecication())
                 .pathParam("id", id)
                 .when()
                 .get(GET_ALL_ENDPOINT + "/{id}")
@@ -36,7 +33,7 @@ public class PlayerController {
 
     public ValidatableResponse getAll() {
         return RestAssured
-                .given()
+                .given().spec(getDefaultRequestSpecication())
                 .when()
                 .get(GET_ALL_ENDPOINT)
                 .then();

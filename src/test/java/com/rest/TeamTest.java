@@ -7,9 +7,8 @@ import com.rest.steps.TeamSteps;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TeamTest {
 
@@ -18,23 +17,26 @@ public class TeamTest {
 
     @Test
     public void getAllTeamTest() {
+        List<PlayerDto> expectedPlayerForLiverpool = playerSteps.getAll()
+                .stream()
+                .filter(p -> "Liverpool".equalsIgnoreCase(p.getTeamName()))
+                .collect(Collectors.toList());
 
-        TeamDto expectedTeamPlayer = TeamDto.builder()
+        TeamDto expectedTeam = TeamDto.builder()
+                .id(2)
+                .captainId(0)
                 .name("Liverpool")
-                .players(Arrays.asList(playerSteps.getAll()
-                        .extract().body().as(PlayerDto[].class)))
+                .players(expectedPlayerForLiverpool)
                 .build();
 
-        List<TeamDto> actualTeams = Arrays.asList(
+        List<TeamDto> actualTeams =
                 teamSteps
-                        .getAll()
-                        .extract().body().as(TeamDto[].class)
-        );
+                        .getAll();
 
         Assertions
                 .assertThat(actualTeams)
                 .as("Team does not exist")
-                .contains(expectedTeamPlayer);
+                .contains(expectedTeam);
     }
 
     @Test
@@ -42,16 +44,14 @@ public class TeamTest {
         TeamDto expectedTeam = TeamDto.builder()
                 .name("Liverpool")
                 .id(2)
+                .captainId(0)
                 .build();
 
-        List<TeamDto> actualTeam = Collections.singletonList(
-                teamSteps.findById(expectedTeam.getId())
-                        .extract().body().as(TeamDto.class)
-        );
+        TeamDto actualTeam = teamSteps.findById(expectedTeam.getId());
 
         Assertions
                 .assertThat(actualTeam)
                 .as("Team does not exist by id " + expectedTeam.getId())
-                .contains(expectedTeam);
+                .isEqualToComparingOnlyGivenFields(expectedTeam, "name", "captainId");
     }
 }

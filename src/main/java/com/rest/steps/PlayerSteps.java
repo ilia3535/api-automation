@@ -1,29 +1,34 @@
 package com.rest.steps;
 
 import com.rest.controller.PlayerController;
+import com.rest.dto.PlayerDto;
 import io.restassured.response.ValidatableResponse;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class PlayerSteps {
 
     public PlayerController playerController = new PlayerController();
 
 
-    public ValidatableResponse postBody(String fullName, String position, String teamName) {
+    public ValidatableResponse postBody(PlayerDto playerDto) {
         return playerController
-                .createPlayer(fullName, position, teamName)
+                .createPlayer(playerDto)
                 .statusCode(201);
     }
 
-    public ValidatableResponse postBody(int statusCode, String fullName, String position, String teamName) {
+    public ValidatableResponse postBody(int statusCode, PlayerDto playerDto) {
         return playerController
-                .createPlayer(fullName, position, teamName)
+                .createPlayer(playerDto)
                 .statusCode(statusCode);
     }
 
-    public ValidatableResponse getPlayerById(int id) {
+    public PlayerDto getPlayerById(int id) {
         return playerController
                 .getOne(id)
-                .statusCode(200);
+                .statusCode(200)
+                .extract().body().as(PlayerDto.class);
     }
 
     public ValidatableResponse getPlayerById(int statusCode, int id) {
@@ -32,10 +37,11 @@ public class PlayerSteps {
                 .statusCode(statusCode);
     }
 
-    public ValidatableResponse getAll() {
-        return playerController
+    public List<PlayerDto> getAll() {
+        return Arrays.asList(playerController
                 .getAll()
-                .statusCode(200);
+                .statusCode(200)
+                .extract().body().as(PlayerDto[].class));
     }
 
     public ValidatableResponse getAll(int statusCode) {

@@ -9,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerDto {
-    private int id;
+    private Integer id;
     private String idParam;
     private String fullName;
     private String position;
