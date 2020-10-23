@@ -20,7 +20,8 @@ public class PlayerController {
                 .body(toCreatePlayer)
                 .when()
                 .post(POST_CREATE_NEW_PLAYER)
-                .then();
+                .then()
+                .log().all();
     }
 
     public ValidatableResponse updatePlayer(PlayerDto toUpdatePlayer, int id) {
@@ -30,7 +31,8 @@ public class PlayerController {
                 .body(toUpdatePlayer)
                 .when()
                 .put(PUT_UPDATE_PLAYER + "/{id}")
-                .then();
+                .then()
+                .log().all();
     }
 
     public ValidatableResponse deleteUser(int id) {
@@ -39,7 +41,8 @@ public class PlayerController {
                 .pathParam("id", id)
                 .when()
                 .delete(DELETE_PLAYER + "/{id}")
-                .then();
+                .then()
+                .log().all();
     }
 
 
@@ -49,7 +52,8 @@ public class PlayerController {
                 .pathParam("id", id)
                 .when()
                 .get(GET_ALL_ENDPOINT + "/{id}")
-                .then();
+                .then()
+                .log().all();
     }
 
     public ValidatableResponse getAll() {
@@ -57,7 +61,8 @@ public class PlayerController {
                 .given().spec(getDefaultRequestSpecication())
                 .when()
                 .get(GET_ALL_ENDPOINT)
-                .then();
+                .then()
+                .log().all();
     }
 
 

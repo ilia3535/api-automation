@@ -12,7 +12,8 @@ public class TeamController {
                 .given()
                 .when()
                 .get(GET_ALL_ENDPOINT)
-                .then();
+                .then()
+                .log().all();
     }
 
     public ValidatableResponse findById(int id) {
@@ -21,6 +22,7 @@ public class TeamController {
                 .pathParam("id", id)
                 .when()
                 .get(GET_ALL_ENDPOINT + "/{id}")
-                .then();
+                .then()
+                .log().all();
     }
 }
