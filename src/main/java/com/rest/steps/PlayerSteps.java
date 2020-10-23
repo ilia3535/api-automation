@@ -12,15 +12,42 @@ public class PlayerSteps {
     public PlayerController playerController = new PlayerController();
 
 
-    public ValidatableResponse postBody(PlayerDto playerDto) {
+    public PlayerDto postBody(PlayerDto playerDto) {
         return playerController
                 .createPlayer(playerDto)
-                .statusCode(201);
+                .statusCode(201)
+                .extract().body().as(PlayerDto.class);
     }
 
     public ValidatableResponse postBody(int statusCode, PlayerDto playerDto) {
         return playerController
                 .createPlayer(playerDto)
+                .statusCode(statusCode);
+    }
+
+    public PlayerDto putBody(PlayerDto playerDto, int id) {
+        return playerController
+                .updatePlayer(playerDto, id)
+                .statusCode(200)
+                .extract().body().as(PlayerDto.class);
+    }
+
+    public ValidatableResponse putBody(int statusCode, PlayerDto playerDto, int id) {
+        return playerController
+                .updatePlayer(playerDto, id)
+                .statusCode(statusCode);
+    }
+
+    public PlayerDto deletePlayer(int id) {
+        return playerController
+                .deleteUser(id)
+                .statusCode(200)
+                .extract().body().as(PlayerDto.class);
+    }
+
+    public ValidatableResponse deletePlayer(int statusCode, int id) {
+        return playerController
+                .deleteUser(id)
                 .statusCode(statusCode);
     }
 

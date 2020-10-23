@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 public class PlayerDto {
     private Integer id;
-    private String idParam;
     private String fullName;
     private String position;
     private String teamName;
