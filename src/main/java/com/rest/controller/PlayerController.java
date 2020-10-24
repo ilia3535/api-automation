@@ -24,13 +24,12 @@ public class PlayerController {
                 .log().all();
     }
 
-    public ValidatableResponse updatePlayer(PlayerDto toUpdatePlayer, int id) {
+    public ValidatableResponse updatePlayer(PlayerDto toUpdatePlayer) {
         return RestAssured
                 .given().spec(getDefaultRequestSpecication())
-                .pathParam("id", id)
                 .body(toUpdatePlayer)
                 .when()
-                .put(PUT_UPDATE_PLAYER + "/{id}")
+                .put(PUT_UPDATE_PLAYER)
                 .then()
                 .log().all();
     }

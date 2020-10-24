@@ -1,6 +1,7 @@
 package com.rest;
 
 import com.rest.controller.PlayerController;
+import com.rest.dto.ErrorMessageDto;
 import com.rest.dto.PlayerDto;
 import com.rest.steps.PlayerSteps;
 import org.assertj.core.api.Assertions;
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class PlayerTest {
@@ -72,7 +74,11 @@ public class PlayerTest {
                 .teamName("Lasc")
                 .build();
 
-        playerSteps.postBody(400, toCreatePlayer);
+        ErrorMessageDto error = playerSteps.postBody(400, toCreatePlayer, ErrorMessageDto.class);
+
+        Assertions
+                .assertThat(error.getMessage())
+                .isEqualTo("Player should not have id field");
     }
 
     @Test
@@ -107,12 +113,13 @@ public class PlayerTest {
     public void updateUserTest() {
 
         PlayerDto toUpdatePlayer = PlayerDto.builder()
+                .id(9)
                 .fullName("Sturridge")
                 .position("RF")
                 .teamName("Trabzonspor")
                 .build();
 
-        PlayerDto actual = playerSteps.putBody(toUpdatePlayer, 9);
+        PlayerDto actual = playerSteps.putBody(toUpdatePlayer);
 
         Assertions.assertThat(actual)
                 .isEqualTo(toUpdatePlayer);
@@ -122,19 +129,27 @@ public class PlayerTest {
     public void updateUserWithWrongIdTest() {
 
         PlayerDto toUpdatePlayer = PlayerDto.builder()
+                .id(222)
                 .fullName("Sturridge")
                 .position("RF")
                 .teamName("Trabzonspor")
                 .build();
 
-        playerSteps.putBody(404, toUpdatePlayer, 222);
+        playerSteps.putBody(404, toUpdatePlayer);
 
     }
 
     @Test
     public void deletePlayerTest() {
-        playerSteps.deletePlayer(8);
-        playerSteps.getPlayerById(404, 8);
+        List<PlayerDto> current = Arrays.asList(playerController.getAll().extract().body().as(PlayerDto[].class));
+        if (current.isEmpty()) {
+            throw new RuntimeException("No available players");
+        }
+        int randomIndex = new Random().nextInt(current.size());
+        int randomId = current.get(randomIndex).getId();
+
+        playerSteps.deletePlayer(randomId);
+        playerSteps.getPlayerById(404, randomId);
     }
 
     @Test

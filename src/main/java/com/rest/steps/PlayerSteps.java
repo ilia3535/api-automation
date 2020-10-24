@@ -19,30 +19,30 @@ public class PlayerSteps {
                 .extract().body().as(PlayerDto.class);
     }
 
-    public ValidatableResponse postBody(int statusCode, PlayerDto playerDto) {
+    public <T> T postBody(int statusCode, PlayerDto playerDto, Class<T> clazz) {
         return playerController
                 .createPlayer(playerDto)
-                .statusCode(statusCode);
+                .statusCode(statusCode)
+                .extract().body().as(clazz);
     }
 
-    public PlayerDto putBody(PlayerDto playerDto, int id) {
+    public PlayerDto putBody(PlayerDto playerDto) {
         return playerController
-                .updatePlayer(playerDto, id)
+                .updatePlayer(playerDto)
                 .statusCode(200)
                 .extract().body().as(PlayerDto.class);
     }
 
-    public ValidatableResponse putBody(int statusCode, PlayerDto playerDto, int id) {
+    public ValidatableResponse putBody(int statusCode, PlayerDto playerDto) {
         return playerController
-                .updatePlayer(playerDto, id)
+                .updatePlayer(playerDto)
                 .statusCode(statusCode);
     }
 
-    public PlayerDto deletePlayer(int id) {
-        return playerController
+    public void deletePlayer(int id) {
+        playerController
                 .deleteUser(id)
-                .statusCode(200)
-                .extract().body().as(PlayerDto.class);
+                .statusCode(204);
     }
 
     public ValidatableResponse deletePlayer(int statusCode, int id) {

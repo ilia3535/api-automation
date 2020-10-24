@@ -24,7 +24,8 @@ public class PropertyLoader {
     private static Properties loadProperties() {
         Properties prop = new Properties();
 
-        try (InputStream input = new FileInputStream("application.properties")) {
+        String environment = System.getProperty("env", "qa");
+        try (InputStream input = new FileInputStream(String.format("application-%s.properties", environment))) {
             prop.load(input);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
