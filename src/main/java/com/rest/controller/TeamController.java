@@ -10,7 +10,7 @@ public class TeamController {
 
     private static String GET_ALL_ENDPOINT = "/v1/team";
     private static String POST_CREATE_NEW_TEAM = "/v1/team";
-    private static String PUT_UPDATE_NEW_TEAM = "/v1/team";
+    private static String PUT_UPDATE_NEW_TEAM = "/v1/team/%s/assign/%s";
 
     public ValidatableResponse getAll() {
         return RestAssured
@@ -41,12 +41,11 @@ public class TeamController {
                 .log().all();
     }
 
-    public ValidatableResponse updateTeam(TeamDto toUpdateTeam) {
+    public ValidatableResponse assignPlayer(int teamId, int playerId) {
         return RestAssured
                 .given().spec(getDefaultRequestSpecication())
-                .body(toUpdateTeam)
                 .when()
-                .put(PUT_UPDATE_NEW_TEAM)
+                .put(String.format(PUT_UPDATE_NEW_TEAM, teamId, playerId))
                 .then()
                 .log().all();
     }

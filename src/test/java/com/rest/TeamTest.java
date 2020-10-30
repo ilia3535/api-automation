@@ -87,4 +87,32 @@ public class TeamTest {
                 .isNotNegative()
                 .isNotNull();
     }
+
+    @Test
+    public void assignPlayerToTheTeam() {
+
+        PlayerDto expectedPlayer = PlayerDto.builder()
+                .id(2)
+                .fullName("Héctor Bellerín")
+                .teamName("Liverpool")
+                .position("DF")
+                .build();
+
+
+        TeamDto expectedTeam = TeamDto.builder()
+                .id(2)
+                .name("Liverpool")
+                .players(Collections.singletonList(expectedPlayer))
+                .build();
+
+        teamSteps.putBody(expectedTeam.getId(), expectedPlayer.getId());
+
+        List<TeamDto> actualTeam = Collections.singletonList(teamSteps.findById(expectedTeam.getId()));
+
+        PlayerDto actualPlayer = playerSteps.getPlayerById(expectedPlayer.getId());
+
+        Assertions.assertThat(actualPlayer)
+                .as("Player hasn't found")
+                .isEqualTo(expectedPlayer);
+    }
 }

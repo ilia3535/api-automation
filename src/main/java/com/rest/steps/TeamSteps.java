@@ -50,10 +50,15 @@ public class TeamSteps {
                 .statusCode(statusCode);
     }
 
-    public TeamDto putBody(TeamDto teamDto) {
+    public ValidatableResponse putBody(int teamId, int playerId) {
         return teamController
-                .updateTeam(teamDto)
-                .statusCode(202)
-                .extract().body().as(TeamDto.class);
+                .assignPlayer(teamId, playerId)
+                .statusCode(202);
+    }
+
+    public ValidatableResponse putBody(int statusCode, int teamId, int playerId) {
+        return teamController
+                .assignPlayer(teamId, playerId)
+                .statusCode(statusCode);
     }
 }
