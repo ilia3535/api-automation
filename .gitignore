@@ -1,5 +1,7 @@
 # Intellij
+
 .idea/*
+target/*
 *.iml
 *.iws
 *.log
