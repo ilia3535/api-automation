@@ -29,14 +29,15 @@ public class PlayerSteps {
     public PlayerDto putBody(PlayerDto playerDto) {
         return playerController
                 .updatePlayer(playerDto)
-                .statusCode(200)
+                .statusCode(202)
                 .extract().body().as(PlayerDto.class);
     }
 
-    public ValidatableResponse putBody(int statusCode, PlayerDto playerDto) {
+    public <T> T putBody(int statusCode, PlayerDto playerDto, Class<T> clazz) {
         return playerController
                 .updatePlayer(playerDto)
-                .statusCode(statusCode);
+                .statusCode(statusCode)
+                .extract().body().as(clazz);
     }
 
     public void deletePlayer(int id) {
@@ -45,10 +46,11 @@ public class PlayerSteps {
                 .statusCode(204);
     }
 
-    public ValidatableResponse deletePlayer(int statusCode, int id) {
+    public <T> T deletePlayer(int statusCode, int id, Class<T> clazz) {
         return playerController
                 .deleteUser(id)
-                .statusCode(statusCode);
+                .statusCode(statusCode)
+                .extract().body().as(clazz);
     }
 
     public PlayerDto getPlayerById(int id) {
@@ -58,10 +60,11 @@ public class PlayerSteps {
                 .extract().body().as(PlayerDto.class);
     }
 
-    public ValidatableResponse getPlayerById(int statusCode, int id) {
+    public <T> T getPlayerById(int statusCode, int id, Class<T> clazz) {
         return playerController
                 .getOne(id)
-                .statusCode(statusCode);
+                .statusCode(statusCode)
+                .extract().body().as(clazz);
     }
 
     public List<PlayerDto> getAll() {

@@ -106,7 +106,11 @@ public class PlayerTest {
                 .id(200)
                 .build();
 
-        playerSteps.getPlayerById(404, expectedId.getId());
+        ErrorMessageDto error = playerSteps.getPlayerById(404, expectedId.getId(), ErrorMessageDto.class);
+
+        Assertions
+                .assertThat(error.getMessage())
+                .isEqualTo(String.format("Player with id: [%s] not found", expectedId.getId()));
     }
 
     @Test
@@ -116,7 +120,7 @@ public class PlayerTest {
                 .id(9)
                 .fullName("Sturridge")
                 .position("RF")
-                .teamName("Trabzonspor")
+                .teamName("Liverpool")
                 .build();
 
         PlayerDto actual = playerSteps.putBody(toUpdatePlayer);
@@ -132,11 +136,14 @@ public class PlayerTest {
                 .id(222)
                 .fullName("Sturridge")
                 .position("RF")
-                .teamName("Trabzonspor")
+                .teamName("Liverpool")
                 .build();
 
-        playerSteps.putBody(404, toUpdatePlayer);
+        ErrorMessageDto error = playerSteps.putBody(404, toUpdatePlayer, ErrorMessageDto.class);
 
+        Assertions
+                .assertThat(error.getMessage())
+                .isEqualTo("Player with id: " + toUpdatePlayer.getId() + " not found");
     }
 
     @Test
@@ -149,12 +156,25 @@ public class PlayerTest {
         int randomId = current.get(randomIndex).getId();
 
         playerSteps.deletePlayer(randomId);
-        playerSteps.getPlayerById(404, randomId);
+        ErrorMessageDto error = playerSteps.getPlayerById(404, randomId, ErrorMessageDto.class);
+
+        Assertions
+                .assertThat(error.getMessage())
+                .isEqualTo(String.format("Player with id: [%s] not found", randomId));
     }
 
     @Test
     public void deletePlayerWithWrongIdTest() {
-        playerSteps.deletePlayer(404, 333);
+
+        PlayerDto idOfNotExistingPlayer = PlayerDto.builder()
+                .id(333)
+                .build();
+
+        ErrorMessageDto error = playerSteps.deletePlayer(404, idOfNotExistingPlayer.getId(), ErrorMessageDto.class);
+
+        Assertions
+                .assertThat(error.getMessage())
+                .isEqualTo(String.format("Player with id: [%s] not found", idOfNotExistingPlayer.getId()));
     }
 
 
