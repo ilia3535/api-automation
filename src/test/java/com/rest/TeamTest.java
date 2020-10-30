@@ -1,5 +1,6 @@
 package com.rest;
 
+import com.rest.controller.TeamController;
 import com.rest.dto.PlayerDto;
 import com.rest.dto.TeamDto;
 import com.rest.steps.PlayerSteps;
@@ -7,13 +8,14 @@ import com.rest.steps.TeamSteps;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TeamTest {
 
     public PlayerSteps playerSteps = new PlayerSteps();
     public TeamSteps teamSteps = new TeamSteps();
+    public TeamController teamController = new TeamController();
 
     @Test
     public void getAllTeamTest() {
@@ -29,9 +31,7 @@ public class TeamTest {
                 .players(expectedPlayerForLiverpool)
                 .build();
 
-        List<TeamDto> actualTeams =
-                teamSteps
-                        .getAll();
+        List<TeamDto> actualTeams = teamSteps.getAll();
 
         Assertions
                 .assertThat(actualTeams)
@@ -53,5 +53,38 @@ public class TeamTest {
                 .assertThat(actualTeam)
                 .as("Team does not exist by id " + expectedTeam.getId())
                 .isEqualToComparingOnlyGivenFields(expectedTeam, "name", "captainId");
+    }
+
+    @Test
+    public void createNewTeamTest() {
+
+        List<TeamDto> current = Arrays.asList(teamController.getAll().extract().body().as(TeamDto[].class));
+        List<TeamDto> sorted = current.stream().sorted(new Comparator<TeamDto>() {
+            public int compare(TeamDto o1, TeamDto o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        }).collect(Collectors.toList());
+
+        int expectedId = sorted.get(sorted.size() - 1).getId() + 1;
+
+        List<PlayerDto> players = new ArrayList<>();
+
+        TeamDto toCreateTeam = TeamDto.builder()
+                .id(expectedId)
+                .name("Chelsea")
+                .players(players)
+                .captainId(2)
+                .build();
+
+        TeamDto actual = teamSteps.postBody(toCreateTeam);
+
+        Assertions.assertThat(actual)
+                .isEqualTo(toCreateTeam);
+        Assertions.assertThat(actual.getId())
+                .as("Wrong id")
+                .isEqualTo(expectedId)
+                .isNotZero()
+                .isNotNegative()
+                .isNotNull();
     }
 }

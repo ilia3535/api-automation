@@ -36,4 +36,24 @@ public class TeamSteps {
                 .findById(id)
                 .statusCode(statusCode);
     }
+
+    public TeamDto postBody(TeamDto teamDto) {
+        return teamController
+                .createTeam(teamDto)
+                .statusCode(201)
+                .extract().body().as(TeamDto.class);
+    }
+
+    public ValidatableResponse postBody(int statusCode, TeamDto teamDto) {
+        return teamController
+                .createTeam(teamDto)
+                .statusCode(statusCode);
+    }
+
+    public TeamDto putBody(TeamDto teamDto) {
+        return teamController
+                .updateTeam(teamDto)
+                .statusCode(202)
+                .extract().body().as(TeamDto.class);
+    }
 }

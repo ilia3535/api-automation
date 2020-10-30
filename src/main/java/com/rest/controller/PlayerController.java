@@ -2,7 +2,6 @@ package com.rest.controller;
 
 import com.rest.dto.PlayerDto;
 import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import io.restassured.response.ValidatableResponse;
 
 import static com.rest.utils.SpecificationFactory.getDefaultRequestSpecication;

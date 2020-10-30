@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamDto {
     private int captainId;
-    private int id;
+    private Integer id;
     private String name;
     private List<PlayerDto> players;
 }
