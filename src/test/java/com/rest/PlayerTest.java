@@ -120,7 +120,7 @@ public class PlayerTest {
                 .id(9)
                 .fullName("Sturridge")
                 .position("RF")
-                .teamName("Liverpool")
+                .teamName("Arsenal")
                 .build();
 
         playerSteps.putBody(toUpdatePlayer);
