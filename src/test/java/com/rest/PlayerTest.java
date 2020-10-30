@@ -123,7 +123,9 @@ public class PlayerTest {
                 .teamName("Liverpool")
                 .build();
 
-        PlayerDto actual = playerSteps.putBody(toUpdatePlayer);
+        playerSteps.putBody(toUpdatePlayer);
+
+        PlayerDto actual = playerSteps.getPlayerById(toUpdatePlayer.getId());
 
         Assertions.assertThat(actual)
                 .isEqualTo(toUpdatePlayer);

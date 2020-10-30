@@ -107,12 +107,14 @@ public class TeamTest {
 
         teamSteps.putBody(expectedTeam.getId(), expectedPlayer.getId());
 
-        List<TeamDto> actualTeam = Collections.singletonList(teamSteps.findById(expectedTeam.getId()));
+        TeamDto actualTeam = teamSteps.findById(expectedTeam.getId());
 
         PlayerDto actualPlayer = playerSteps.getPlayerById(expectedPlayer.getId());
 
         Assertions.assertThat(actualPlayer)
                 .as("Player hasn't found")
                 .isEqualTo(expectedPlayer);
+        Assertions.assertThat(actualTeam.getPlayers())
+                .contains(expectedPlayer);
     }
 }

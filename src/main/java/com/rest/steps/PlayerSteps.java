@@ -26,11 +26,10 @@ public class PlayerSteps {
                 .extract().body().as(clazz);
     }
 
-    public PlayerDto putBody(PlayerDto playerDto) {
+    public ValidatableResponse putBody(PlayerDto playerDto) {
         return playerController
                 .updatePlayer(playerDto)
-                .statusCode(202)
-                .extract().body().as(PlayerDto.class);
+                .statusCode(202);
     }
 
     public <T> T putBody(int statusCode, PlayerDto playerDto, Class<T> clazz) {
