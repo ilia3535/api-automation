@@ -8,7 +8,10 @@ import com.rest.steps.TeamSteps;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TeamTest {
@@ -91,6 +94,8 @@ public class TeamTest {
     @Test
     public void assignPlayerToTheTeam() {
 
+        int liverpoolTeamId = 2;
+
         PlayerDto expectedPlayer = PlayerDto.builder()
                 .id(2)
                 .fullName("Héctor Bellerín")
@@ -99,22 +104,18 @@ public class TeamTest {
                 .build();
 
 
-        TeamDto expectedTeam = TeamDto.builder()
-                .id(2)
-                .name("Liverpool")
-                .players(Collections.singletonList(expectedPlayer))
-                .build();
+        teamSteps.putBody(liverpoolTeamId, expectedPlayer.getId());
 
-        teamSteps.putBody(expectedTeam.getId(), expectedPlayer.getId());
-
-        TeamDto actualTeam = teamSteps.findById(expectedTeam.getId());
+        TeamDto actualTeam = teamSteps.findById(liverpoolTeamId);
 
         PlayerDto actualPlayer = playerSteps.getPlayerById(expectedPlayer.getId());
 
-        Assertions.assertThat(actualPlayer)
+        Assertions
+                .assertThat(actualPlayer)
                 .as("Player hasn't found")
                 .isEqualTo(expectedPlayer);
-        Assertions.assertThat(actualTeam.getPlayers())
+        Assertions
+                .assertThat(actualTeam.getPlayers())
                 .contains(expectedPlayer);
     }
 }

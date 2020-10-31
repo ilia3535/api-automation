@@ -3,14 +3,16 @@ package com.rest.steps;
 import com.rest.controller.PlayerController;
 import com.rest.dto.PlayerDto;
 import io.restassured.response.ValidatableResponse;
+import lombok.extern.java.Log;
 
 import java.util.Arrays;
 import java.util.List;
 
+
+@Log
 public class PlayerSteps {
 
     public PlayerController playerController = new PlayerController();
-
 
     public PlayerDto postBody(PlayerDto playerDto) {
         return playerController
@@ -60,6 +62,8 @@ public class PlayerSteps {
     }
 
     public <T> T getPlayerById(int statusCode, int id, Class<T> clazz) {
+        log.info("Info test");
+        log.warning("Warning test!!!");
         return playerController
                 .getOne(id)
                 .statusCode(statusCode)
