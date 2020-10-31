@@ -6,3 +6,5 @@
 *.iws
 *.log
 out/
+/target/classes/com/rest/controller/TeamController.class
+/target/*
